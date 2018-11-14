@@ -1,1 +1,1 @@
-#Simple blind voting algorithm realized by solidity - Ethereum
+# Simple blind voting algorithm realized by solidity - Ethereum
