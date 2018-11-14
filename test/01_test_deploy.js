@@ -4,6 +4,7 @@ var VotingVersion;
 var from;
 var to;
 var owner;
+var initstate;
 
 
 contract('Voting', function(accounts) {
@@ -20,11 +21,15 @@ contract('Voting', function(accounts) {
         }).then(function(result) {
             to = result;
             return VotingInstance.owner();
-        }).then(function(result) {
-            owner = result;              
+        }).then(function(result) { 
+            owner = result;       
+            return VotingInstance.votingState();
+        }).then(function(result) { 
+            initstate = result;
             assert.equal(VotingVersion, "0.0.1", "Voting version is 0.0.1");            
             assert.equal(from, 10, "from parameter matching");            
             assert.equal(to, 100, "to parameter matching");            
+            assert.equal(initstate, 0, "state is init state");                        
             assert.equal(owner, accounts[0], "owner address matching");             
         });
     });
