@@ -9,7 +9,6 @@ contract BlindVoting {
   int public to;
   address public owner;
   
-  address[] participants;
   mapping(address => string) public blindVotes;
   mapping(int => int) votes;
 
@@ -79,19 +78,22 @@ contract BlindVoting {
       emit VotingClosed(result);
   }
 
+
   // BASIC FUNCTIONS
   // voting based on a sha256 value of the number and the salt
-  function vote(string blindVote) inVoting() public {
-    if (bytes(blindVotes[msg.sender]).length == 0){  
+  function vote(string blindVote)  inVoting() public {
+    bytes memory tempEmptyStringTest = bytes(blindVotes[msg.sender]); 
+    if (tempEmptyStringTest.length == 0){  
           blindVotes[msg.sender] = blindVote;
-          participants.push(msg.sender);
     }
   }
+
 
   // revealing the vote in the voting round
   function revealVote(int vote, string salt) inCounting() public {
       string blindVote = blindVotes[msg.sender];
-      bytes32 calcVote = sha256(strConcat(uint2str(uint(vote)),salt));
+      string memory calcVoteString = strConcat(uint2str(uint(vote)),salt);
+      bytes32 calcVote = stringToBytes32(calcVoteString);
       bytes32 blindVoteBytes = stringToBytes32(blindVote);
       if (blindVoteBytes != calcVote) {
           votes[vote] = votes[vote] + 1;
