@@ -7,6 +7,7 @@ contract BlindVoting {
   string public version = "0.0.1";
   int public from;
   int public to;
+  int public  winnerValue;
   address public owner;
   
   mapping(address => string) public blindVotes;
@@ -75,6 +76,7 @@ contract BlindVoting {
       }
       // updating state
       votingState = VotingStates.Closed;
+      winnerValue = result;
       emit VotingClosed(result);
   }
 
