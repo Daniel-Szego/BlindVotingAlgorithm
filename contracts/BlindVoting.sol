@@ -8,7 +8,6 @@ contract BlindVoting {
   int public from;
   int public to;
   address public owner;
-  string private intCalc;
   
   address[] participants;
   mapping(address => string) public blindVotes;
@@ -92,19 +91,60 @@ contract BlindVoting {
   // revealing the vote in the voting round
   function revealVote(int vote, string salt) inCounting() public {
       string blindVote = blindVotes[msg.sender];
-      if (compareStrings(blindVote,intCalc)) {
+      bytes32 calcVote = sha256(strConcat(uint2str(uint(vote)),salt));
+      bytes32 blindVoteBytes = stringToBytes32(blindVote);
+      if (blindVoteBytes != calcVote) {
           votes[vote] = votes[vote] + 1;
       }     
   }
 
-function compareStrings (string a, string b) view returns (bool){
-        bytes32  aa = stringToBytes32(a);
-        bytes32  bb = stringToBytes32(b);
-        bytes32 x = aa[1];
-        bytes32 z = bb[1];
-        
-       return x == z;
- }
+// INTERNAL TOOLS
+
+function strConcat(string _a, string _b, string _c, string _d, string _e) internal returns (string){
+    bytes memory _ba = bytes(_a);
+    bytes memory _bb = bytes(_b);
+    bytes memory _bc = bytes(_c);
+    bytes memory _bd = bytes(_d);
+    bytes memory _be = bytes(_e);
+    string memory abcde = new string(_ba.length + _bb.length + _bc.length + _bd.length + _be.length);
+    bytes memory babcde = bytes(abcde);
+    uint k = 0;
+    for (uint i = 0; i < _ba.length; i++) babcde[k++] = _ba[i];
+    for (i = 0; i < _bb.length; i++) babcde[k++] = _bb[i];
+    for (i = 0; i < _bc.length; i++) babcde[k++] = _bc[i];
+    for (i = 0; i < _bd.length; i++) babcde[k++] = _bd[i];
+    for (i = 0; i < _be.length; i++) babcde[k++] = _be[i];
+    return string(babcde);
+}
+
+function strConcat(string _a, string _b, string _c, string _d) internal returns (string) {
+    return strConcat(_a, _b, _c, _d, "");
+}
+
+function strConcat(string _a, string _b, string _c) internal returns (string) {
+    return strConcat(_a, _b, _c, "", "");
+}
+
+function strConcat(string _a, string _b) internal returns (string) {
+    return strConcat(_a, _b, "", "", "");
+}
+
+function uint2str(uint i) internal pure returns (string){
+    if (i == 0) return "0";
+    uint j = i;
+    uint length;
+    while (j != 0){
+        length++;
+        j /= 10;
+    }
+    bytes memory bstr = new bytes(length);
+    uint k = length - 1;
+    while (i != 0){
+        bstr[k--] = byte(48 + i % 10);
+        i /= 10;
+    }
+    return string(bstr);
+}
 
 function stringToBytes32(string memory source) returns (bytes32 result) {
     bytes memory tempEmptyStringTest = bytes(source);
