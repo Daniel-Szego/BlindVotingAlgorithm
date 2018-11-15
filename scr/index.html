@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Test Voting UI</title>
+    <!-- Bootstrap -->
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        
+
+    <script src="./js/web3.min.js"></script>
+    <script src="./js/jquery.min.js"></script>
+    
+
+</head>
+<body>
+
+        <div class="container">
+                <div class="row">
+                  <div class="col-xs-12 col-sm-8 col-sm-push-2">
+                    <h1 class="text-center">Voting</h1>
+                    <hr/>
+                    <br/>
+                  </div>
+                </div>
+          
+                <div id="walletRow" class="row">
+                        <div class="col-sm-6 col-sm-push-3 col-md-4 col-md-push-4">
+                          <div class="panel panel-default">
+                            <div class="panel-heading">
+                              <div>Wallet ID: <span id="TTWallet"></span> </div>
+                              <br/>
+                              <div>Address: <span id="TTAddress"></span> </div>
+                            </div>
+                            <div class="panel-body">
+                                <strong>Token Balance</strong>: <span id="TTBalanceToken"></span> <br/><br/>
+                                <strong>Ether Balance</strong>: <span id="TTBalanceEther"></span>  <strong>(Wei)</strong> <br/><br/>
+                              <div id = "DIVCreate">
+                                 <h4>Create New Wallet</h4>
+                                <input type="text" class="form-control" id="TTWalletID" placeholder="Name" />
+                                <input type="password" class="form-control" id="TTWalletPW" placeholder="Password" />
+                                <input type="checkbox" onclick="showPassword()"> Show Password
+                                <br/>                               
+                                <input type="text" class="form-control" id="TTWalletTokenNr" placeholder="Token Number" />                                
+                                <br/>                                                               
+                                <button class="btn btn-primary" id="createWalletButton" type="button">Create New Wallet</button>
+                             </div>
+                              <div id = "DIVTransfer">
+                                <h4>Transfer Token</h4>
+                                <input type="text" class="form-control" id="TTTransferTokenAddress" placeholder="Address" />
+                                <input type="text" class="form-control" id="TTTransferTokenAmount" placeholder="Amount" />              
+                                <button class="btn btn-primary" id="transferTokenButton" type="button">Transfer Token</button>
+                              </div>
+                              <div id = "DIVBackup">
+                                <h4>Backup Wallet</h4>
+                                <button class="btn btn-primary" id="backupWalletButton" type="button">Backup Wallet</button>
+                               </div>    
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+    </div>
+
+    <script src="./js/Votingfunctions.js"></script>
+    
+
+</body>
+</html>
