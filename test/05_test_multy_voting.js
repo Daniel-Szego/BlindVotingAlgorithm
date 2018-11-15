@@ -9,7 +9,7 @@ var hashInput99 = '8C1F1046219DDD216A023F792356DDF127FCE372A72EC9B4CDAC989EE5B0B
 var hashOutput;
 
 contract('Voting', function(accounts) {
-    it("test of the voting functionality", function() {
+    it("test of multiply voting", function() {
         return Voting.deployed(10, 100).then(function(instance) {
             VotingInstance = instance;
             return VotingInstance.votingState({from: accounts[0]});                         
