@@ -18,3 +18,6 @@ The voting pocess:
 - vote with the given hash value
 - in the counting phase reveal the choosen value and the salt with the revealVote call
 
+Securify security report:
+https://securify.chainsecurity.com/report/8fae9b13731c23aabfb8c0d783a433ed2113da5327b3e38225b5afc65fffb3e9
+
