@@ -227,7 +227,6 @@
     
     var TestTokenAddress = "0x345ca3e014aaf5dca488057592ee47305d9b3e10";
     var TestTokenContract = web3.eth.contract(TestTokenABI).at(TestTokenAddress);
-    var OwnerAddress = "0x627306090abab3a6e1400e9345bc60c78a8bef57";
     
     refreshVisibility();  
 
@@ -254,17 +253,17 @@
      //UI
 
     function refreshVisibility(){
-      var accountAddress = getAccountAddress();
+      var account = getAccountAddress();
       var votingState = getVotingState();
       var votingFrom = getVotingFrom();
       var votingTo = getVotingTo();
       var winner = getWinner();
 
-      $("#TTAddress").val(accountAddress);
-      $("#TTVoting").val(votingState);
-      $("#TTfrom").val(votingFrom);
-      $("#TTto").val(votingTo);
-      $("#TTWinner").val(winner);      
+      $("#TTAddress").text(account);
+      $("#TTVoting").text(votingState);
+      $("#TTfrom").text(votingFrom);
+      $("#TTto").text(votingTo);
+      $("#TTWinner").text(winner);      
     }
 
 
@@ -272,23 +271,28 @@
 
     // READ
     function getAccountAddress(){
-
+      var account = web3.eth.accounts[0];
+      return account;
     }
-
+    
     function getVotingState(){
-
+      var votingState = TestTokenContract.votingState.call();
+      return votingState;
     }
 
     function getVotingFrom(){
-
+      var from = TestTokenContract.from.call();
+      return from;
     }
 
     function getVotingTo(){
-
+      var to = TestTokenContract.to.call();
+      return to;
     }
 
     function getWinner() {
-
+      var winnerValue = TestTokenContract.winnerValue.call();
+      return winnerValue;
     }
 
     //WRITE
