@@ -1,6 +1,11 @@
 
     // set the provider you want from Web3.providers
-    web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:9545/"));
+    if (typeof web3 !== 'undefined') {
+      // Use Mist/MetaMask's provider
+      web3js = new Web3(web3.currentProvider);
+    } else {
+      web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:9545/"));
+    }
 
     var TestTokenABI = [
       {
@@ -227,7 +232,8 @@
     
     var TestTokenAddress = "0x345ca3e014aaf5dca488057592ee47305d9b3e10";
     var TestTokenContract = web3.eth.contract(TestTokenABI).at(TestTokenAddress);
-    
+    var fromAddress;
+
     refreshVisibility();  
 
     $("#voteButton").click(function(){
@@ -260,10 +266,6 @@
       var winner = getWinner();
 
       $("#TTAddress").text(account);
-      $("#TTVoting").text(votingState);
-      $("#TTfrom").text(votingFrom);
-      $("#TTto").text(votingTo);
-      $("#TTWinner").text(winner);      
     }
 
 
@@ -272,31 +274,74 @@
     // READ
     function getAccountAddress(){
       var account = web3.eth.accounts[0];
+      fromAddress = account;
       return account;
     }
     
     function getVotingState(){
-      var votingState = TestTokenContract.votingState.call();
-      return votingState;
+      var votingState = TestTokenContract.votingState.call(function(error, value) {
+        if (!error) {
+          console.log('success');
+          $("#TTVoting").text(value);          
+      } else {
+          console.log(err);
+      }
+      });
     }
 
     function getVotingFrom(){
-      var from = TestTokenContract.from.call();
-      return from;
+      var from = TestTokenContract.from.call(function(error, value) {
+        if (!error) {
+          console.log('success');
+          $("#TTfrom").text(value);
+        } else {
+          console.log(err);
+      }}
+      );
     }
 
     function getVotingTo(){
-      var to = TestTokenContract.to.call();
-      return to;
+      var to = TestTokenContract.to.call(function(error, value) {
+        if (!error) {
+          console.log('success');
+          $("#TTto").text(value);
+        } else {
+          console.log(err);
+      }});
     }
 
     function getWinner() {
-      var winnerValue = TestTokenContract.winnerValue.call();
-      return winnerValue;
+      var winnerValue = TestTokenContract.winnerValue.call(function(error, value) {
+        if (!error) {
+          console.log('success');
+          $("#TTWinner").text(value);      
+        } else {
+          console.log(err);
+      }});
     }
 
     //WRITE
     function vote(){
+      var value = $("#TTVoteNr").val();
+      var salt = $("#TTVoteSalt").val();
+  
+     /* var retVal = TestTokenContract.vote.sendTransaction(11,'xx', 
+        {from: fromAddress},
+        function(error, result){
+        if (!error){
+          alert("Vote has been succeeded");
+        } else {
+          console.log(error);
+        }
+      }); */
+
+      TestTokenContract.methods.vote(11,"xx").call(function(err) {
+        if (!err) {
+            console.log('success');
+        } else {
+            console.log(err);
+        }
+      });
 
     }
 
@@ -306,6 +351,15 @@
 
     function startVoting() {
 
+      TestTokenContract.startVotingRound().sendTransaction( 
+        {from: fromAddress},
+        function(error, result){
+        if (!error){
+          alert("success");       
+        } else {
+          console.log(error);
+        }
+      });
     }
 
     function startCounting(){
