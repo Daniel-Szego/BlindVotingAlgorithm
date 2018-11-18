@@ -4,7 +4,7 @@
       // Use Mist/MetaMask's provider
       web3js = new Web3(web3.currentProvider);
     } else {
-      web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:9545/"));
+      //web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:9545/"));
     }
 
     var TestTokenABI = [
@@ -230,7 +230,7 @@
       }
     ];
     
-    var TestTokenAddress = "0x345ca3e014aaf5dca488057592ee47305d9b3e10";
+    var TestTokenAddress = "0x38cf23c52bb4b13f051aec09580a2de845a7fa35";
     var TestTokenContract = web3.eth.contract(TestTokenABI).at(TestTokenAddress);
     var fromAddress;
 
@@ -325,24 +325,14 @@
       var value = $("#TTVoteNr").val();
       var salt = $("#TTVoteSalt").val();
   
-     /* var retVal = TestTokenContract.vote.sendTransaction(11,'xx', 
-        {from: fromAddress},
+      var retVal = TestTokenContract.vote(value,salt,
         function(error, result){
         if (!error){
           alert("Vote has been succeeded");
         } else {
           console.log(error);
         }
-      }); */
-
-      TestTokenContract.methods.vote(11,"xx").call(function(err) {
-        if (!err) {
-            console.log('success');
-        } else {
-            console.log(err);
-        }
-      });
-
+      }); 
     }
 
     function revealVote(){
@@ -351,8 +341,7 @@
 
     function startVoting() {
 
-      TestTokenContract.startVotingRound().sendTransaction( 
-        {from: fromAddress},
+      var retVal =  TestTokenContract.startVotingRound( 
         function(error, result){
         if (!error){
           alert("success");       
@@ -364,8 +353,26 @@
 
     function startCounting(){
 
+      var retVal =  TestTokenContract.startCountingRound( 
+        function(error, result){
+        if (!error){
+          alert("success");       
+        } else {
+          console.log(error);
+        }
+      });
+
     }
 
     function finishVote(){
+
+      var retVal =  TestTokenContract.finishVoting( 
+        function(error, result){
+        if (!error){
+          alert("success");       
+        } else {
+          console.log(error);
+        }
+      });
 
     }
