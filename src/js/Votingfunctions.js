@@ -230,7 +230,7 @@
       }
     ];
     
-    var TestTokenAddress = "0x38cf23c52bb4b13f051aec09580a2de845a7fa35";
+    var TestTokenAddress = "0xcfed223fab2a41b5a5a5f9aaae2d1e882cb6fe2d";
     var TestTokenContract = web3.eth.contract(TestTokenABI).at(TestTokenAddress);
     var fromAddress;
 
@@ -324,8 +324,9 @@
     function vote(){
       var value = $("#TTVoteNr").val();
       var salt = $("#TTVoteSalt").val();
-  
-      var retVal = TestTokenContract.vote(value,salt,
+      var hash = sha256(value.toString() + salt);
+
+      var retVal = TestTokenContract.vote(hash,
         function(error, result){
         if (!error){
           alert("Vote has been succeeded");
@@ -336,7 +337,17 @@
     }
 
     function revealVote(){
+      var value = $("#TTRevealVoteNr").val();
+      var salt = $("#TTRevealVoteSalt").val();
 
+      var retVal = TestTokenContract.revealVote(value,salt,
+        function(error, result){
+        if (!error){
+          alert("Vote has been succeeded");
+        } else {
+          console.log(error);
+        }
+      }); 
     }
 
     function startVoting() {
